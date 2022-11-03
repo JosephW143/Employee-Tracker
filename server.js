@@ -1,7 +1,70 @@
 const db = require('./db/connection');
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
+const { exit } = require('process');
 
+const init = () => {
+    inquirer.prompt({
+        name: 'choice',
+        type: 'list',
+        message: 'Please select an option from the list',
+        choices: [
+            'View all Employees',
+            'Add Employee',
+            'Remove Employee',
+            'View all Roles',
+            'Add Role',
+            'Remove Role',
+            'View all Departments',
+            'Add Department',
+            'Remove Department',
+            'Quit'
+        ]
+    })
+        .then((answer) => {
+            switch (answer.choice) {
+                case 'View all Employees':
+                viewEmployees();
+                break;
+
+                case 'Add Employee':
+                addEmployee();
+                break;
+
+                case 'Remove Employee':
+                removeEmployees();
+                break;
+
+                case 'View all Roles':
+                viewRole();
+                break;
+
+                case 'Add Role':
+                addRole();
+                break;
+
+                case 'Remove Role':
+                removeRole();
+                break;
+
+                case 'View all Departments':
+                viewDepartment();
+                break;
+
+                case 'Add Department':
+                addDepartment();
+                break;
+
+                case 'Remove Department':
+                removeDepartment();
+                break;
+
+                case 'Quit':
+                quit();
+                break;
+            }
+        })
+}
 
 const viewEmployees = () => {
     db.query(
@@ -16,7 +79,7 @@ const viewEmployees = () => {
 const addEmployee = () => {
     db.query(`SELECT * FROM role;`, (err, res) => {
         if (err) throw err;
-        inquirer.createPromptModule([
+        inquirer.prompt([
             {
                 name: 'first_name',
                 type: 'input',
