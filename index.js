@@ -2,6 +2,7 @@ const db = require('./db/connection');
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 const { exit } = require('process');
+const { type } = require('os');
 
 const init = () => {
     inquirer.prompt({
@@ -197,7 +198,29 @@ const addRole = () => {
 };
 
 const removeRole = () => {
-    
+    db.query(`SELECT * FROM roles;`, (err, res) => {
+        if (err) throw err;
+        inquirer.prompt([
+            {
+                name: 'role',
+                type: 'input',
+                message: 'What Role would you like to Remove:'
+            }
+        ])
+            .then((answer) => {
+                db.query(
+                    `DELETE FROM role WHERE ?`,
+                    {
+                        title: (answer.role)
+                    },
+                    (err, res) => {
+                        if (err) throw err;
+                        console.log(`${res.affectedRows} Deleted!`)
+                        viewRole();
+                    }
+                )
+            })
+    })
 };
 
 const viewDepartment = () => {
