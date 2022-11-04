@@ -68,7 +68,7 @@ const init = () => {
 
 const viewEmployees = () => {
     db.query(
-        `SELECT`,
+        `SELECT employee.id AS id, employee.first_name AS first_name, employee.last_name AS last_name, role.title AS title, department. department_name AS department, roles.salary AS salary`,
         (err, res) => {
             if (err) throw err;
             console.table(res)
@@ -93,12 +93,12 @@ const addEmployee = () => {
             {
                 name: 'role',
                 type: 'input',
-                message: 'What is the role ID of this Employee'
+                message: 'What is the role ID of this Employee:'
             },
             {
                 name: 'manager_id',
                 type: 'input',
-                message: 'Enter the ID of this Employees Manager'
+                message: 'Enter the ID of this Employees Manager:'
             }
         ])
             .then((answer) => {
@@ -129,7 +129,7 @@ const removeEmployee = () => {
             {
                 name: 'employee',
                 type: 'input',
-                message: 'What is the ID of the Employee you wish to remove'
+                message: 'What is the ID of the Employee you wish to remove:'
             }
         ])
             .then((answer) => {
@@ -157,7 +157,43 @@ const viewRole = () => {
 };
 
 const addRole = () => {
-
+    db.query(`SELECT * FROM departments`, (err, res) => {
+        if (err) throw err;
+        inquirer.prompt([
+            {
+                name: 'title',
+                type: 'input',
+                message: 'What is the new Roles Name:'
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'What is Salary of this Role:'
+            },
+            {
+                name: 'Department',
+                type: 'input',
+                message: 'what is the Department ID for this Role:'
+            }
+        ])
+            .then((answer) => {
+                db.query(
+                    `INSERT INTO role SET ?`,
+                    [
+                        {
+                            title: answer.title,
+                            salary: answer.salary,
+                            department_id: answer.department
+                        }
+                    ],
+                    (err, res) => {
+                        if (err) throw err;
+                        console.log(`${res.affectedRows} Role Added!`)
+                        viewRole();
+                    }
+                )
+            })
+    })
 };
 
 const removeRole = () => {
@@ -165,7 +201,14 @@ const removeRole = () => {
 };
 
 const viewDepartment = () => {
-    
+    db.query(
+        `SELECT * FROM department:`,
+        (err, res) => {
+            if (err) throw err;
+            console.table(res)
+            init();
+        }
+    )
 };
 
 const addDepartment = () => {
