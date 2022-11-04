@@ -69,7 +69,7 @@ const init = () => {
 
 const viewEmployees = () => {
     db.query(
-        `SELECT employee.id AS id, employee.first_name AS first_name, employee.last_name AS last_name, role.title AS title, department. department_name AS department, roles.salary AS salary`,
+        `SELECT employee.id AS id, employee.first_name AS first_name, employee.last_name AS last_name, role.title AS title, department. department_name AS department, roles.salary AS salary;`,
         (err, res) => {
             if (err) throw err;
             console.table(res)
@@ -134,7 +134,8 @@ const removeEmployee = () => {
             }
         ])
             .then((answer) => {
-                db.query(`DELETE FROM employee WHERE ?`),
+                db.query(
+                    `DELETE FROM employee WHERE ?`,
                 {
                     id: (answer.employee)
                 },
@@ -142,6 +143,7 @@ const removeEmployee = () => {
                     if(err) throw err
                     console.log(`${affectedRows} Deleted!`)
                 }
+                )
             })
     })
 };
@@ -158,7 +160,7 @@ const viewRole = () => {
 };
 
 const addRole = () => {
-    db.query(`SELECT * FROM departments`, (err, res) => {
+    db.query(`SELECT * FROM departments;`, (err, res) => {
         if (err) throw err;
         inquirer.prompt([
             {
@@ -225,7 +227,7 @@ const removeRole = () => {
 
 const viewDepartment = () => {
     db.query(
-        `SELECT * FROM department:`,
+        `SELECT * FROM department;`,
         (err, res) => {
             if (err) throw err;
             console.table(res)
@@ -260,7 +262,29 @@ const addDepartment = () => {
 };
 
 const removeDepartment = () => {
-    
+    db.query(`SELECT * FROM department;`, (err, res) => {
+        if (err) throw err;
+        inquirer.prompt([
+            {
+                name: 'department',
+                type: 'input',
+                message: 'Which department would you like Remove:'
+            }
+        ])
+            .then((answer) => {
+                db.query(
+                    `DELETE FROM department WHERE ?`,
+                    {
+                        department_id: (answer.department)
+                    },
+                    (err, res) => {
+                        if (err) throw err;
+                        console.log(`${res.affectedRows} Deleted!`)
+                        viewDepartment();
+                    }
+                )
+            })
+    })
 };
 
 const quit = () => {
