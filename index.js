@@ -235,7 +235,28 @@ const viewDepartment = () => {
 };
 
 const addDepartment = () => {
-    
+    inquirer.prompt([
+        {
+            name: 'department',
+            type: 'input',
+            message: 'What Department would you like add:'
+        }
+    ])
+        .then((answer) => {
+            db.query(
+                `INSERT INTO department SET ?`,
+                [
+                    {
+                        department_name: answer.name
+                    }
+                ],
+                (err, res) => {
+                    if (err) throw err;
+                    console.log(`${res.affectedRows} new Department added!`)
+                    viewDepartment();
+                }
+            )
+        })
 };
 
 const removeDepartment = () => {
