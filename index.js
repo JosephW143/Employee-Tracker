@@ -32,7 +32,7 @@ const init = () => {
                 break;
 
                 case 'Remove Employee':
-                removeEmployees();
+                removeEmployee();
                 break;
 
                 case 'View all Roles':
@@ -64,7 +64,7 @@ const init = () => {
                 break;
             }
         })
-}
+};
 
 const viewEmployees = () => {
     db.query(
@@ -74,7 +74,7 @@ const viewEmployees = () => {
             console.table(res)
         }
     )
-}
+};
 
 const addEmployee = () => {
     db.query(`SELECT * FROM role;`, (err, res) => {
@@ -120,4 +120,36 @@ const addEmployee = () => {
                 )
             })
     })
-}
+};
+
+const removeEmployee = () => {
+
+};
+
+const viewRole = () => {
+
+};
+
+const addRole = () => {
+
+};
+
+const removeRole = () => {
+    
+};
+
+const viewDepartment = () => {
+    
+};
+
+const addDepartment = () => {
+    
+};
+
+const removeDepartment = () => {
+    
+};
+
+const quit = () => {
+    db.end();
+};
