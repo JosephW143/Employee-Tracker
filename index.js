@@ -290,3 +290,5 @@ const removeDepartment = () => {
 const quit = () => {
     db.end();
 };
+
+init();
