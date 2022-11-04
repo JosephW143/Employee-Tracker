@@ -123,7 +123,26 @@ const addEmployee = () => {
 };
 
 const removeEmployee = () => {
-
+    db.query(`SELECT * FROM employee;`, (err, res) => {
+        if(err) throw err;
+        inquirer.prompt([
+            {
+                name: 'employee',
+                type: 'input',
+                message: 'What is the ID of the Employee you wish to remove'
+            }
+        ])
+            .then((answer) => {
+                db.query(`DELETE FROM employee WHERE ?`),
+                {
+                    id: (answer.employee)
+                },
+                (err, res) => {
+                    if(err) throw err
+                    console.log(`${affectedRows} Deleted!`)
+                }
+            })
+    })
 };
 
 const viewRole = () => {
