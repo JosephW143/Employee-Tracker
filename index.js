@@ -146,7 +146,14 @@ const removeEmployee = () => {
 };
 
 const viewRole = () => {
-
+    db.query(
+        `SELECT role.id "id", role.title "title" FROM role;`,
+        (err, res) => {
+            if (err) throw err;
+            console.table(res)
+            init();
+        }
+    )
 };
 
 const addRole = () => {
